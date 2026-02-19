@@ -1,3 +1,5 @@
+from avaliacao import Avalicao
+
 class Restaurante:
 
     restaurantes = []
@@ -6,6 +8,7 @@ class Restaurante:
         this._nome = nome.title()
         this._categoria = categoria.upper()
         this._ativo = False
+        this._avaliacao = []
         Restaurante.restaurantes.append(this)
    
     def __str__(this):
@@ -14,18 +17,28 @@ class Restaurante:
     @classmethod
     def listar_restaurantes(cls):
         for restaurante in cls.restaurantes:
-            print(f'{restaurante._nome} | {restaurante._categoria} | {restaurante.ativo}')
+            print(f'{restaurante._nome} | {restaurante._categoria} | {restaurante.ativo} | {restaurante.media_avaliacao}')
 
     def alternar_estado(this):
         this._ativo = not this._ativo
+
+    def receber_avaliacao(this, cliente, nota):
+        avaliacao = Avalicao(cliente, nota)
+        
+        this._avaliacao.append(avaliacao)
+
+    @property
+    def media_avaliacao(this):
+        if len(this._avaliacao) == 0:
+            return 0
+        total = sum(av._nota for av in this._avaliacao)
+        return total / len(this._avaliacao)
 
 
     @property
     def ativo(this):
         return 'Verdadeiro' if this._ativo else 'Falso'
 
-restaurante1 = Restaurante("barbacoa", "Churrascaria")
-restaurante1.alternar_estado()
-restaurante2 = Restaurante("pizza 1", "Pizzaria")
 
-Restaurante.listar_restaurantes()
+
+
